@@ -3,28 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+
     <title>Document</title>
-    <script src="index.js"></script>
+    {{!-- <script src="index.js"></script> --}}
+    <link rel="stylesheet" href="index.css">
 </head>
-<body>
+<body><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
     <script>function myFunction(key){
-    var x = document.getElementById(key);
+
+      var TextElements = document.getElementsByName(key);
+      
+    for (var i = 0, max = TextElements.length; i < max; i++) {
+      if(TextElements[i].style.display == "block"){
+      TextElements[i].style.display = "none";
+      }
+      else{
+        TextElements[i].style.display = "block";
+      }
+    }
+    //var x = document.getElementById(key);
+   /* console.log(key); 
+    var x = document.querySelectorAll(`[id="${key}"]`);
     console.log(x);
     if (x.style.display === "none") {
       x.style.display = "block";
     } else {
       x.style.display = "none";
     }
-}</script>
-    <img src="C:\Users\snowp\Downloads\wildlife\PetImages\americanRobin\IMGP5639.JPG">
-    {{#each images}}
+    */
+}
+var imgEnlarged = 0;
+var otherEnlargedImgs = [0, 0, 0, 0, 0, 0, 0, 0,];
+function imgEnlarge(e){
+  if (imgEnlarged==0){ //Basic function if no enlarged, enlarge click element
+    e.style.width = "100%";
+     e.style.height = "100%";
+    imgEnlarged = 1;
+    otherEnlargedImgs[e] = 1 
+  }
+  else if (imgEnlarged==1) { //If an image is enlarged, is it this one? If so, resize image
+    e.style.width = "100px";
+    e.style.height = "100px";
+    imgEnlarged = 0;
+    otherEnlargedImgs[0] = 0
+  }
+  else if (imgEnlarged==1 && imgEnlargedOther==1)  { //if enlarged, which? Close other, open current element
+    e.style.width = "100px";
+    e.style.width = "100px";
+    imgEnlarged = 1
+    otherEnlargedImgs[0] = 1
+  }
+}
+function imgAssign() {
+
+}
+
+</script>
+
+
+<head>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+</head>
+
+
+<form method="post" action="/">
+<input type="file" name="imageRecognise" accept="image/png, image/jpeg" />
+<button type="submit" value="submit">Submit Image</button>
+</form>
+
+
+
+
+
+    {{!-- <img src="20220501_200550.jpg"> --}}
+    <div class="">
+    {{#each images as |imagesObj keyIndex|}}
    <h1> {{@key}}</h1>
-   <button onclick="myFunction({{@key}})">Click Me</button>
+   <button type="button" class="btn btn-primary" onclick="myFunction('{{@index}}')">Click Me</button>
     {{!-- <img src="{{this}}"> --}}
+    <div class="card-container">
         {{#each this}}
-         <img src="{{this}}" id="{{@../key}}" width="250" height="250">
+         <img src="{{this}}" id="{{this}}"name="{{@../index}}" width="100" height="100" style="display:none" onclick="imgEnlarge(this)">
         {{/each}}
-    <br>
+        </div>
     {{/each}}
+    </div>
 </body>
 </html>

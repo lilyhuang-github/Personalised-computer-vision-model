@@ -1,4 +1,4 @@
-
+const axios = require("axios");
 const fs = require('fs');
 const path = require('path');
 
@@ -75,17 +75,80 @@ let data = {folderPaths,
 // data += {images};
 // data = JSON.stringify(data);
 // console.log(JSON.stringify(data));
+// console.log(data);
+keys = data.images;
+keys = Object.keys(keys);
+for(x in keys){
+  
+  keys[x] = keys[x].split("\\")[1];
+}
+
+console.log(keys);
+data.keys = keys;
 console.log(data);
+// data.images = keys;
+for (x in keys){
+
+}
+for(x in data.images){
+  let abc = data.images[x];
+  let edf = [];
+  // console.log(data.images[x]);
+  // console.log("ADSAD");
+  for(y of abc){
+    splited = y.split("\\");
+    file = splited[2];
+    edf.push(file);
+    // console.log(abc);
+    // data.images = abc[2];
+   
+  }
+  data.images[x]= edf;
+  // let abc = x.split("\\");
+  // console.log(abc);
+  // data.images[x] = abc[2];
+}
+// console.log(data);
+const image = fs.readFileSync("./Sasuke/20230806_195949.jpg", {
+  encoding: "base64"
+});
+function classify(img){
+  axios({
+    method: "POST",
+    url: "https://classify.roboflow.com/ganggang/1",
+    params: {
+        api_key: "KET7keiB3oppMfRvRoKz"
+    },
+    data: img,
+    headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+    }
+  })
+  .then(function(response) {
+    console.log(response.data);
+  })
+  .catch(function(error) {
+    console.log(error.message);
+  });
+}
+// classify(image);
 const HTTP_PORT = process.env.PORT || 3000;
 const express = require("express");
 const exphbs = require("express-handlebars");
 // const path = require("path");
+
+
+// const path = require("path");
 //establish a path
 const app = express();
-const router = express.Router();
+app.use(express.json());	//support json encoded bodies
+app.use(express.urlencoded({extended: false}));	//support encoded bodies
+
+
 // router.use(express.static(path.join(__dirname, '/PetImages')));
 for (x of folderPaths){
-    router.use(express.static(path.join(__dirname, `\\${x}`)));
+    app.use(express.static(path.join(__dirname, `\\${x}`)));
+    // console.log(x);
     // console.log(path);
 }
 
@@ -96,11 +159,21 @@ app.engine(".hbs", exphbs.engine({	//establish an association between the expres
 }));
 app.set('view engine', '.hbs');
 
+app.use(express.static(path.join(__dirname, '/PetImages')));
+
+app.use(express.static(path.join(__dirname, '/public')));
 app.get("/", (req,res)=>{
     res.render('index', {
         images:images
     })
 });
+app.post("/", (req, res)=>{
+  // console.log(req.body.imageRecognise);
+  const test = fs.readFileSync(req.body.imageRecognise, {
+    encoding: "base64"
+  });
+  console.log(test);
+})
 app.listen(HTTP_PORT, function(){
 	console.log(`Listening on port ${HTTP_PORT}`);
 });
