@@ -7,6 +7,9 @@ The model is designed to recognize my personal animals rather than some animal. 
 - It recognises Pomegranate, my sister's cat, whom should be categorically distinct from neighbor's cat 
 - It recognises Naruto, Sasuke, and Co, my fishes, they are not food, they are more than just fish, and the image recognition agrees with me.
 
+TLDR:
 This project intersects my interests, my programming knowledge, and personal life.
+Also I realised Pomegranate and Co are technically not wildlife.
 
+Pomegranate ↓
 ![Picture of my sister's cat pomegranate](./PetImages/Pomegranate(properNoun)/20230521_191927.jpg)
