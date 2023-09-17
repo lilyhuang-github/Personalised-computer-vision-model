@@ -1,3 +1,10 @@
-The idea of this project was to make a train an image recognition model based off of my personal collection of wildlife. This is the opposite of most image recognition models as they are usually trained on thousands of photos gathered from a variety of sources.
-It being based off of my photos is supposed to make it more of my personal image recognition model than just a general image recognition model and also a look into my life, as well as a look into my photography. 
-A cross between my three passions of photography, machine learning, and programming. So it won't recognise a JUST a cat but specifically the neighbourhood cat, who goes around the backyards; Pomegranate, who's my sister's cat. It won't recognise just a fish, it'll recognise Sasuke and Naruto and Co, my fishes, whom are beloved.
+# Personal Wildlife Image Recognition Project
+
+The goal of this project was to train an image recognition model using my personal collection of wildlife photographs. This approach differs from most image recognition models, which are typically trained on thousands of photos gathered from various sources. By using my own photos, the model becomes a personalized image recognition tool, offering a glimpse into my life and photography . This project is a fusion of my three passions: photography, machine learning, and programming.
+
+The model is designed to recognize my personal animals rather than some animal. For instance:
+- It recognises the neighbor's cat/the korean neighbor's cat rather than thinking it's just some cat
+- It recognises Pomegranate, my sister's cat, whom should be categorically distinct from neighbor's cat 
+- It recognises Naruto, Sasuke, and Co, my fishes, they are not food, they are more than just fish, and the image recognition agrees with me.
+
+This project intersects my interests, my programming knowledge, and personal life.
