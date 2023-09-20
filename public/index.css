@@ -1,0 +1,25 @@
+body{
+    /* background-image: url('IMGP5639.JPG'); */
+    /* background-size: cover; */
+}
+img {
+    /* transition:transform 0.25s ease; */
+    /* margin: auto; */
+ 
+
+
+}
+
+ /* img:hover { */
+    /* -webkit-transform:scale(30); or some other value */
+    /* transform:scale(5); */
+/* } */ 
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    max-width: 65%;
+    margin: 0 auto;
+    padding: 9px;
+    background-color: rgb(95, 95, 255);
+    }

@@ -1,13 +1,18 @@
+const sharp = require('sharp');
+const multer  = require('multer');
 const axios = require("axios");
 const fs = require('fs');
 const path = require('path');
+// require('dotenv').config();
+// const apiKey = process.env.APIKEY
 
+// console.log(apiKey);
 /* TES T TEST*/
 // $(function() {
 // 	//values pulled from query string
 // 	$('#model').val("ganggang");
 // 	$('#version').val("1");
-// 	$('#api_key').val("KET7keiB3oppMfRvRoKz");
+// 	$('#api_key').val("");
 
 // 	setupButtonListeners();
 // });
@@ -240,7 +245,7 @@ function isImageFile(filePath) {
 }
 function myFunction(key){
     var x = document.getElementById(key);
-    console.log(x);
+    // console.log(x);
     if (x.style.display === "none") {
       x.style.display = "block";
     } else {
@@ -275,9 +280,9 @@ for(x in keys){
   keys[x] = keys[x].split("\\")[1];
 }
 
-console.log(keys);
+// console.log(keys);
 data.keys = keys;
-console.log(data);
+// console.log(data);
 // data.images = keys;
 for (x in keys){
 
@@ -304,26 +309,55 @@ for(x in data.images){
 const image = fs.readFileSync("./Sasuke/20230806_195949.jpg", {
   encoding: "base64"
 });
-function classify(img){
-  axios({
-    method: "POST",
-    url: "https://classify.roboflow.com/ganggang/1",
-    params: {
-        api_key: "KET7keiB3oppMfRvRoKz"
-    },
-    data: img,
-    headers: {
+// function classify(img){
+//   // const imaging = fs.readFileSync(img, {
+//   //   encoding: "base64"
+//   // });
+//   axios({
+//     method: "POST",
+//     url: "https://classify.roboflow.com/ganggang/1",
+//     params: {
+//         api_key: ""
+//     },
+//     data: img,
+//     headers: {
+//         "Content-Type": "application/x-www-form-urlencoded"
+//     }
+//   })
+//   .then(function(response) {
+//     console.log(response.data);
+//     return response.data;
+   
+//   })
+//   .catch(function(error) {
+//     console.log(error.message);
+//     return error.message;
+//   });
+// }
+function classify(img) {
+  return new Promise((resolve, reject) => {
+    axios({
+      method: "POST",
+      url: "https://classify.roboflow.com/ganggang/1",
+      params: {
+        api_key: apiKey
+      },
+      data: img,
+      headers: {
         "Content-Type": "application/x-www-form-urlencoded"
-    }
-  })
-  .then(function(response) {
-    console.log(response.data);
-  })
-  .catch(function(error) {
-    console.log(error.message);
+      }
+    })
+    .then(function(response) {
+      console.log(response.data);
+      resolve(response.data);
+    })
+    .catch(function(error) {
+      console.log(error.message);
+      reject(error.message);
+    });
   });
 }
-classify(image);
+// classify(image);
 const HTTP_PORT = process.env.PORT || 3000;
 const express = require("express");
 const exphbs = require("express-handlebars");
@@ -333,6 +367,7 @@ const exphbs = require("express-handlebars");
 // const path = require("path");
 //establish a path
 const app = express();
+const upload = multer({ dest: 'uploads/' });
 app.use(express.json());	//support json encoded bodies
 app.use(express.urlencoded({extended: false}));	//support encoded bodies
 
@@ -366,6 +401,23 @@ app.post("/", (req, res)=>{
 //   });
 //   console.log(test);
 })
+
+app.post('/upload', upload.single('fileToUpload'), async (req, res) => {
+  sharp(req.file.path) 
+    .resize(650, 650)   // resize to consistent
+    .toBuffer(async (err, buffer) => {
+      if (err) {
+        return res.status(500).send('Error resizing image');
+      }
+  const image = buffer.toString('base64'); 
+  // const image = fs.readFileSync(req.file.path, { encoding: 'base64' });
+  
+  let result = await classify(image);
+  result = JSON.stringify(result);
+  console.log(result);
+  res.send(`File uploaded and sent for classification! \n Animal detected: }\n Response":${result}`);});
+
+});
 app.listen(HTTP_PORT, function(){
 	console.log(`Listening on port ${HTTP_PORT}`);
 });
